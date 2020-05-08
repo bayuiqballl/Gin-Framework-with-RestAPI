@@ -38,6 +38,7 @@ func main() {
 			{
 				articles.GET("/", routes.GetHome)
 				articles.GET("/tag/:tag", routes.GetArticleByTag)
+				articles.GET("/id/:id", routes.GetArticleById)
 				articles.POST("/", middleware.IsAuth(), routes.PostArticle)
 				articles.PUT("/update/:id", middleware.IsAuth(), routes.UpdateArticle)
 				articles.DELETE("/delete/:id", middleware.IsAdmin(), routes.DeleteArticle)

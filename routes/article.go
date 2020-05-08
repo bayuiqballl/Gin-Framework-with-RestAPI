@@ -53,6 +53,26 @@ func GetArticle(c *gin.Context) {
 	})
 }
 
+func GetArticleById(c *gin.Context) {
+
+	// ambil data detail dari database/API
+	// mengolah
+	id := c.Param("id")
+
+	var item models.Article
+
+	if config.DB.First(&item, "id = ?", id).RecordNotFound() {
+		c.JSON(404, gin.H{"status": "error", "message": "record not found"})
+		c.Abort()
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"status": "berhasil",
+		"data":   item,
+	})
+}
+
 // POST
 func PostArticle(c *gin.Context) {
 
