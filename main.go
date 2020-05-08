@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/bayuiqballl/Gin-framework/config"
+	"github.com/bayuiqballl/Gin-framework/middleware"
 	"github.com/bayuiqballl/Gin-framework/routes"
 	"github.com/gin-gonic/gin"
 	"github.com/subosito/gotenv"
@@ -27,6 +28,10 @@ func main() {
 		{
 			v1.GET("/auth/:provider", routes.RedirectHandler)
 			v1.GET("/auth/:provider/callback", routes.CallbackHandler)
+
+			// testing token
+			v1.GET("/check", middleware.IsAuth(), routes.CheckToken)
+
 			articles := v1.Group("/article")
 			{
 				articles.GET("/", routes.GetHome)
