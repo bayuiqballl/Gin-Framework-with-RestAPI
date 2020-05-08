@@ -14,9 +14,9 @@ import (
 )
 
 // temporary check token
-func CheckToken(c *gin.Context) {
-	c.JSON(200, gin.H{"msg": "success login"})
-}
+// func CheckToken(c *gin.Context) {
+// 	c.JSON(200, gin.H{"msg": "success login"})
+// }
 
 // Redirect to correct oAuth URL
 func RedirectHandler(c *gin.Context) {

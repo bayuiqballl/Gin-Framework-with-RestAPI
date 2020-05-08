@@ -8,4 +8,5 @@ type Article struct {
 	Slug   string `gorm:"unique_index"`
 	Desc   string `sql:"type:text;"`
 	UserID uint
+	Tag    string
 }

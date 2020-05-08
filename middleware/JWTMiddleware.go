@@ -10,10 +10,14 @@ import (
 )
 
 func IsAuth() gin.HandlerFunc {
-	return checkJWT()
+	return checkJWT(false)
 }
 
-func checkJWT() gin.HandlerFunc {
+func IsAdmin() gin.HandlerFunc {
+	return checkJWT(true)
+}
+
+func checkJWT(middlewareAdmin bool) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.Request.Header.Get("Authorization")
 		bearerToken := strings.Split(authHeader, " ")
@@ -30,7 +34,16 @@ func checkJWT() gin.HandlerFunc {
 			})
 
 			if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-				fmt.Println(claims["user_id"], claims["user_role"])
+				userRole := bool(claims["user_role"].(bool))
+				c.Set("jwt_user_id", claims["user_id"])
+				// c.Set("jwt_user_isAdmin", claims["user_role"])
+
+				if middlewareAdmin == true && userRole == false {
+					c.JSON(403, gin.H{"msg": "only admin allowed"})
+					c.Abort()
+					return
+				}
+
 			} else {
 				c.JSON(422, gin.H{"msg": "Invalid token", "error": err})
 				c.Abort()
