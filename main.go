@@ -4,12 +4,14 @@ import (
 	"github.com/bayuiqballl/Gin-framework/config"
 	"github.com/bayuiqballl/Gin-framework/routes"
 	"github.com/gin-gonic/gin"
+	"github.com/subosito/gotenv"
 )
 
 func main() {
 	// set up database
 	config.InitDB()
 	defer config.DB.Close()
+	gotenv.Load()
 
 	// setup routing/Router
 	router := gin.Default()
@@ -23,6 +25,8 @@ func main() {
 	v1 := router.Group("/api/v1/")
 	{
 		{
+			v1.GET("/auth/:provider", routes.RedirectHandler)
+			v1.GET("/auth/:provider/callback", routes.CallbackHandler)
 			articles := v1.Group("/article")
 			{
 				articles.GET("/", routes.GetHome)
